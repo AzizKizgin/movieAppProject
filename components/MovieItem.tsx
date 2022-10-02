@@ -10,7 +10,7 @@ const MovieItem = () => {
       style={{
         flexDirection: "row",
         flex: 1,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         marginTop: 10,
       }}
     >

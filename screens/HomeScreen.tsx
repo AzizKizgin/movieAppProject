@@ -33,8 +33,9 @@ const HomeScreen = () => {
   ];
   return (
     <SafeAreaView style={{ backgroundColor: mainColor, flex: 1 }}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <FlashList
+          showsHorizontalScrollIndicator={false}
           snapToAlignment="start"
           decelerationRate={"fast"}
           snapToInterval={Dimensions.get("window").width}
@@ -74,10 +75,12 @@ const HomeScreen = () => {
               alignItems: "center",
             }}
           >
-            <Text style={{ color: white }}>Now Playing</Text>
+            <Text style={{ color: white }}>Upcoming</Text>
           </TouchableOpacity>
         </View>
         <FlashList
+          overScrollMode="never"
+          estimatedItemSize={50}
           data={data}
           renderItem={() => {
             return <MovieItem />;
