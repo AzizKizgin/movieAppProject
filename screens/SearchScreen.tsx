@@ -1,13 +1,14 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { mainColor } from "../constants/color";
+import { mainColor, white } from "../constants/color";
+import { Icon, Input } from "@rneui/base";
 
 const SearchScreen = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: mainColor }}>
-      <Text>searchScreen</Text>
-    </SafeAreaView>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: mainColor }}
+    ></SafeAreaView>
   );
 };
 
