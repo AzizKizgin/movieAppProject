@@ -62,9 +62,9 @@ const HomeScreen = () => {
     if (index > dataIndex) {
       index = 0;
     }
-    flatListRef.current?.scrollToIndex({
+    flatListRef.current?.scrollToOffset({
+      offset: index * Dimensions.get("window").width,
       animated: true,
-      index: index,
     });
   }, 3000);
   return (
