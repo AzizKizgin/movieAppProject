@@ -55,10 +55,8 @@ const SearchScreen = () => {
             return (
               <MovieItem
                 backdrop_path={item.item.backdrop_path}
-                genre_ids={item.item.genre_ids}
                 id={item.item.id}
                 original_title={item.item.original_title}
-                overview={item.item.overview}
                 release_date={item.item.release_date}
                 key={item.item.id}
               />

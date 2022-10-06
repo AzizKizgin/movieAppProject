@@ -2,7 +2,6 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainColor, white } from "../constants/color";
-import { color } from "@rneui/base";
 
 const AccountScreen = () => {
   return (
@@ -33,17 +32,17 @@ const AccountScreen = () => {
       >
         <View style={{ alignSelf: "flex-start" }}>
           <TouchableOpacity style={{ marginBottom: 20 }}>
-            <Text style={{ color: white, fontSize: 16 }}>İzleme Listem</Text>
+            <Text style={{ color: white, fontSize: 16 }}>Watch List</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ marginBottom: 20 }}>
-            <Text style={{ color: white, fontSize: 16 }}>Favorilerim</Text>
+            <Text style={{ color: white, fontSize: 16 }}>Favories</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ marginBottom: 20 }}>
-            <Text style={{ color: white, fontSize: 16 }}>Hesap Ayarları</Text>
+            <Text style={{ color: white, fontSize: 16 }}>Account Settings</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity>
-          <Text style={{ color: white, fontSize: 16 }}>Çıkış Yap</Text>
+          <Text style={{ color: white, fontSize: 16 }}>Log Out</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

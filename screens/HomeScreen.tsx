@@ -43,11 +43,9 @@ const HomeScreen = () => {
   const dataIndex = 19;
   let index = 0;
 
-  const [nowPlaying, setNowPlaying] = React.useState([]);
-  const [upComing, setUpComing] = React.useState([]);
-
   const flatListRef = React.useRef<FlatList>(null);
-
+  let nowPlaying = Array<any>();
+  let upcoming = Array<any>();
   useEffect(() => {
     getData("popular", 1, setPopularData);
     getData("now_playing", 1, setNowPlayingData);
@@ -57,6 +55,8 @@ const HomeScreen = () => {
     getData("upcoming", 2, setUpComingData2);
   }, []);
 
+  nowPlaying = nowPlaying.concat(nowPlayingData, nowPlayingData2);
+  upcoming = upcoming.concat(upComingData, upComingData2);
   const interval = setInterval(() => {
     index++;
     if (index > dataIndex) {
@@ -66,14 +66,12 @@ const HomeScreen = () => {
       offset: index * Dimensions.get("window").width,
       animated: true,
     });
-  }, 3000);
+  }, 5000);
   return (
-    <SafeAreaView
-      style={{ backgroundColor: mainColor, flex: 1, width: x, height: y }}
-    >
+    <SafeAreaView style={{ backgroundColor: mainColor, flex: 1 }}>
       <Animated.View style={{ flex: 1 }}>
         <FlatList
-          data={isNowPlaying ? nowPlayingData : upComingData}
+          data={isNowPlaying ? nowPlaying : upcoming}
           ListHeaderComponent={
             <>
               <FlatList
@@ -92,11 +90,7 @@ const HomeScreen = () => {
                   return (
                     <PopularMovies
                       backdrop_path={item.item.backdrop_path}
-                      genre_ids={item.item.genre_ids}
                       id={item.item.id}
-                      original_title={item.item.original_title}
-                      overview={item.item.overview}
-                      release_date={item.item.release_date}
                     />
                   );
                 }}
@@ -151,10 +145,8 @@ const HomeScreen = () => {
               <MovieItem
                 key={item.item.id}
                 backdrop_path={item.item.backdrop_path}
-                genre_ids={item.item.genre_ids}
                 id={item.item.id}
                 original_title={item.item.original_title}
-                overview={item.item.overview}
                 release_date={item.item.release_date}
               />
             );

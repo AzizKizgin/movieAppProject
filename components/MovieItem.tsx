@@ -1,26 +1,30 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { Image } from "@rneui/base";
 import { x } from "../constants/size";
 import { white } from "../constants/color";
+import { useNavigation } from "@react-navigation/native";
 
 interface IMoviesItemProps {
   backdrop_path: string;
   id: number;
   original_title: string;
-  overview: string;
   release_date: string;
-  genre_ids: number[];
 }
 
 const MovieItem: React.FC<IMoviesItemProps> = (props) => {
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.8}
       style={{
         flexDirection: "row",
         flex: 1,
         paddingHorizontal: 10,
         marginTop: 10,
+      }}
+      onPress={() => {
+        navigation.navigate("MovieDetail", { id: props.id });
       }}
     >
       <View style={{ flexDirection: "row" }}>
@@ -39,7 +43,7 @@ const MovieItem: React.FC<IMoviesItemProps> = (props) => {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

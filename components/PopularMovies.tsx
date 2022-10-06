@@ -1,27 +1,27 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { Image } from "@rneui/base";
 import { x } from "../constants/size";
+import { useNavigation } from "@react-navigation/native";
 
 interface IPopularMoviesProps {
   backdrop_path: string;
   id: number;
-  original_title: string;
-  overview: string;
-  release_date: string;
-  genre_ids: number[];
 }
 
 const PopularMovies: React.FC<IPopularMoviesProps> = (props) => {
+  const navigation = useNavigation();
   return (
-    <View>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("MovieDetail", { id: props.id })}
+    >
       <Image
         source={{
           uri: "https://image.tmdb.org/t/p/original" + props.backdrop_path,
         }}
         style={{ width: x, height: x * (9 / 16) }}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
