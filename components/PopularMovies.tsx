@@ -13,6 +13,7 @@ const PopularMovies: React.FC<IPopularMoviesProps> = (props) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
+      //@ts-ignore
       onPress={() => navigation.navigate("MovieDetail", { id: props.id })}
     >
       <Image

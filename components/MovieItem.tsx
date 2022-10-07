@@ -24,21 +24,34 @@ const MovieItem: React.FC<IMoviesItemProps> = (props) => {
         marginTop: 10,
       }}
       onPress={() => {
+        //@ts-ignore
         navigation.navigate("MovieDetail", { id: props.id });
       }}
     >
-      <View style={{ flexDirection: "row" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          flex: 1,
+        }}
+      >
         <Image
           source={{
             uri: "https://image.tmdb.org/t/p/original" + props.backdrop_path,
           }}
           style={{ width: 160, height: 90 }}
         />
-        <View style={{ marginLeft: 10, alignSelf: "flex-start" }}>
+        <View
+          style={{
+            marginLeft: 10,
+            alignSelf: "flex-start",
+            flex: 1,
+            paddingRight: 10,
+          }}
+        >
           <Text style={{ color: white, fontSize: 16 }}>
             {props.original_title}
           </Text>
-          <Text style={{ color: white, fontSize: 12 }}>
+          <Text style={{ color: white, fontSize: 12, marginTop: 5 }}>
             {props.release_date}
           </Text>
         </View>

@@ -42,11 +42,15 @@ const getSimilarMovies = (id: number, setData: Function) => {
 
 const MovieDetailScreen = () => {
   const [isFavorite, setIsFavorite] = React.useState(false);
+  const [isListed, setIsListed] = React.useState(false);
   const route = useRoute();
   const [currentID, setCurrentID] = React.useState(route.params?.id);
 
   const [movieData, setMovieData] = React.useState([]);
   const [similarMovies, setSimilarMovies] = React.useState([]);
+
+  const navigation = useNavigation();
+
   useEffect(() => {
     getData(currentID, setMovieData);
     getSimilarMovies(currentID, setSimilarMovies);
@@ -111,13 +115,12 @@ const MovieDetailScreen = () => {
               Rating: {movieData.vote_average?.toFixed(1)}
             </Text>
           </View>
-          <TouchableOpacity
+
+          <View
             style={{
-              borderRadius: 50,
-            }}
-            activeOpacity={1}
-            onPress={() => {
-              setIsFavorite(!isFavorite);
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Icon
@@ -125,8 +128,17 @@ const MovieDetailScreen = () => {
               name="favorite"
               type="material"
               size={30}
+              onPress={() => setIsFavorite(!isFavorite)}
             />
-          </TouchableOpacity>
+            <Icon
+              style={{ marginLeft: 10 }}
+              color={isListed ? "#ff5500" : white}
+              name="favorite"
+              type="fontisto"
+              size={25}
+              onPress={() => setIsListed(!isListed)}
+            />
+          </View>
         </View>
         <View>
           <View>
@@ -148,7 +160,15 @@ const MovieDetailScreen = () => {
               horizontal
               renderItem={(item) => {
                 return (
-                  <View
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    // onPress={() => {
+                    //   navigation.navigate("CompanyDetail", {
+                    //     id: item.item.id,
+                    //     name: item.item.name,
+                    //     logo: item.item.logo_path,
+                    //   });
+                    // }}
                     style={{
                       justifyContent: "center",
                       width: 150,
@@ -160,7 +180,7 @@ const MovieDetailScreen = () => {
                     }}
                   >
                     <Text style={{ color: white }}>{item.item.name}</Text>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
             />

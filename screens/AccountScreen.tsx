@@ -2,8 +2,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainColor, white } from "../constants/color";
-
+import { useNavigation } from "@react-navigation/native";
 const AccountScreen = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={{ backgroundColor: mainColor, flex: 1 }}>
       <View
@@ -41,7 +42,11 @@ const AccountScreen = () => {
             <Text style={{ color: white, fontSize: 16 }}>Account Settings</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("LoginScreen");
+          }}
+        >
           <Text style={{ color: white, fontSize: 16 }}>Log Out</Text>
         </TouchableOpacity>
       </View>

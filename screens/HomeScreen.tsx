@@ -16,7 +16,7 @@ import MovieItem from "../components/MovieItem";
 import axios from "axios";
 import { x, y } from "../constants/size";
 import Animated from "react-native-reanimated";
-
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 const getData = (movieType: string, page: number, setData: Function) => {
   axios({
     method: "GET",
@@ -32,6 +32,8 @@ const getData = (movieType: string, page: number, setData: Function) => {
 };
 
 const HomeScreen = () => {
+  const auth = getAuth();
+  console.log(auth.currentUser);
   const [popularData, setPopularData] = React.useState([]);
 
   const [nowPlayingData, setNowPlayingData] = React.useState([]);

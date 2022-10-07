@@ -18,6 +18,7 @@ const TopRatedMovies: React.FC<IMoviesItemProps> = (props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
+      //@ts-ignore
       onPress={() => navigation.navigate("MovieDetail", { id: props.id })}
       style={{
         flexDirection: "row",
@@ -33,17 +34,29 @@ const TopRatedMovies: React.FC<IMoviesItemProps> = (props) => {
           }}
           style={{ width: 160, height: 90 }}
         />
-        <View style={{ marginLeft: 10, justifyContent: "space-around" }}>
+        <View
+          style={{
+            marginLeft: 10,
+            justifyContent: "space-around",
+          }}
+        >
           <View
             style={{
-              marginLeft: 10,
               alignSelf: "flex-start",
               justifyContent: "space-around",
             }}
           >
-            <Text style={{ color: white, fontSize: 16 }}>
+            <Text
+              style={{
+                textAlign: "left",
+                color: white,
+                fontSize: 16,
+                width: 200,
+              }}
+            >
               {props.original_title}
             </Text>
+
             <Text style={{ color: white, fontSize: 12 }}>
               {props.release_date}
             </Text>
