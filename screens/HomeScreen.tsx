@@ -33,7 +33,7 @@ const getData = (movieType: string, page: number, setData: Function) => {
 
 const HomeScreen = () => {
   const auth = getAuth();
-  console.log(auth.currentUser);
+
   const [popularData, setPopularData] = React.useState([]);
 
   const [nowPlayingData, setNowPlayingData] = React.useState([]);

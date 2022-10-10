@@ -3,6 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainColor, white } from "../constants/color";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, signOut } from "firebase/auth";
 const AccountScreen = () => {
   const navigation = useNavigation();
   return (
@@ -44,7 +45,14 @@ const AccountScreen = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("LoginScreen");
+            const auth = getAuth();
+            signOut(auth)
+              .then(() => {
+                navigation.navigate("LoginScreen");
+              })
+              .catch((error) => {
+                // An error happened.
+              });
           }}
         >
           <Text style={{ color: white, fontSize: 16 }}>Log Out</Text>

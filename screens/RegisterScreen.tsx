@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -38,6 +38,7 @@ const RegisterScreen = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
+        Alert.alert("Error", errorMessage);
       });
   };
 
@@ -104,7 +105,9 @@ const RegisterScreen = () => {
           style={{ borderRadius: 20 }}
           compact
           onPress={() => {
-            Register();
+            if (fullName != "") {
+              Register();
+            }
           }}
         >
           <Text style={{ color: white }}>Register</Text>
@@ -122,7 +125,7 @@ const RegisterScreen = () => {
           </Text>
           <TouchableOpacity
             //@ts-ignore
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("LoginScreen")}
             activeOpacity={0.8}
             style={{ flexDirection: "row" }}
           >

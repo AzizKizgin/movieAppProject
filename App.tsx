@@ -23,22 +23,34 @@ const Stack = createNativeStackNavigator();
 export const app = initializeApp(firebaseConfig);
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
+
 export default function App() {
-  const [user, setUser] = React.useState(false);
   const auth = getAuth();
 
   return (
     <NavigationContainer>
       <StatusBar style="inverted" />
       <Stack.Navigator
-        initialRouteName={getAuth().currentUser ? "BottomNav" : "LoginScreen"}
+        initialRouteName={auth.currentUser === null ? "LoginScreen" : "Main"}
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            animation: "slide_from_right",
+          }}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          options={{
+            animation: "slide_from_right",
+          }}
+        />
 
         <Stack.Screen name="Main" component={BottomNav} />
         <Stack.Screen
