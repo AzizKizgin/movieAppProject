@@ -1,5 +1,4 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
@@ -24,49 +23,74 @@ export const app = initializeApp(firebaseConfig);
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect } from "react";
-
+import SettingsScreen from "./screens/SettingsScreen";
+const auth = getAuth();
 export default function App() {
-  const auth = getAuth();
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log("auth", user);
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+  }, [auth]);
 
   return (
     <NavigationContainer>
       <StatusBar style="inverted" />
       <Stack.Navigator
-        initialRouteName={auth.currentUser === null ? "LoginScreen" : "Main"}
+        initialRouteName={isLoggedIn ? "LoginScreen" : "Main"}
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{
-            animation: "slide_from_right",
-          }}
-        />
-        <Stack.Screen
-          name="RegisterScreen"
-          component={RegisterScreen}
-          options={{
-            animation: "slide_from_right",
-          }}
-        />
-
-        <Stack.Screen name="Main" component={BottomNav} />
-        <Stack.Screen
-          name="MovieDetail"
-          component={MovieDetailScreen}
-          options={{
-            animation: "slide_from_right",
-          }}
-        />
-        <Stack.Screen
-          name="CompanyDetail"
-          component={CompanyDetailScreen}
-          options={{
-            animation: "slide_from_right",
-          }}
-        />
+        {!isLoggedIn ? (
+          <>
+            <Stack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="RegisterScreen"
+              component={RegisterScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Main" component={BottomNav} />
+            <Stack.Screen
+              name="MovieDetail"
+              component={MovieDetailScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="CompanyDetail"
+              component={CompanyDetailScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="SettingsScreen"
+              component={SettingsScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

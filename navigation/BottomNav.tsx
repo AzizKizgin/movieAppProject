@@ -22,6 +22,7 @@ const BottomNav = () => {
   const Tab = createMaterialBottomTabNavigator();
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       labeled={false}
       activeColor={barActive}
       barStyle={{

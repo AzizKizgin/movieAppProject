@@ -11,12 +11,10 @@ import React, { SetStateAction, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { barBorder, mainColor, white } from "../constants/color";
 import PopularMovies from "../components/PopularMovies";
-import { FlashList } from "@shopify/flash-list";
 import MovieItem from "../components/MovieItem";
 import axios from "axios";
-import { x, y } from "../constants/size";
 import Animated from "react-native-reanimated";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 const getData = (movieType: string, page: number, setData: Function) => {
   axios({
     method: "GET",

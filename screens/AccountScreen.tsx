@@ -1,11 +1,19 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainColor, white } from "../constants/color";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { getAuth, signOut } from "firebase/auth";
+
 const AccountScreen = () => {
   const navigation = useNavigation();
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const [displayName, setDisplayName] = React.useState(user?.displayName);
+
+  navigation.addListener("focus", () => {
+    setDisplayName(user?.displayName);
+  });
   return (
     <SafeAreaView style={{ backgroundColor: mainColor, flex: 1 }}>
       <View
@@ -20,26 +28,35 @@ const AccountScreen = () => {
         }}
       >
         <Text style={{ fontSize: 36, fontWeight: "bold", color: mainColor }}>
-          UN
+          {displayName?.charAt(0).toUpperCase()}
+          {displayName?.split(" ")[1] !== undefined
+            ? displayName?.split(" ")[1].charAt(0).toUpperCase()
+            : displayName?.charAt(1).toUpperCase()}
         </Text>
       </View>
       <View
         style={{
           marginTop: 75,
-          paddingHorizontal: 10,
+          paddingHorizontal: 15,
           paddingBottom: 50,
           flex: 1,
           justifyContent: "space-between",
         }}
       >
         <View style={{ alignSelf: "flex-start" }}>
-          <TouchableOpacity style={{ marginBottom: 20 }}>
+          <TouchableOpacity style={{ marginBottom: 20 }} activeOpacity={0.8}>
             <Text style={{ color: white, fontSize: 16 }}>Watch List</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginBottom: 20 }}>
+          <TouchableOpacity style={{ marginBottom: 20 }} activeOpacity={0.8}>
             <Text style={{ color: white, fontSize: 16 }}>Favories</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginBottom: 20 }}>
+          <TouchableOpacity
+            style={{ marginBottom: 20 }}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate("SettingsScreen");
+            }}
+          >
             <Text style={{ color: white, fontSize: 16 }}>Account Settings</Text>
           </TouchableOpacity>
         </View>
@@ -47,7 +64,7 @@ const AccountScreen = () => {
           onPress={() => {
             const auth = getAuth();
             signOut(auth)
-              .then(() => {
+              .then((res) => {
                 navigation.navigate("LoginScreen");
               })
               .catch((error) => {

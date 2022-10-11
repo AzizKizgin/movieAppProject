@@ -22,6 +22,12 @@ const RegisterScreen = () => {
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const errorStyle = {
+    borderColor: "red",
+    borderWidth: 1,
+  };
+  const [nameError, setNameError] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const Register = () => {
     const auth = getAuth();
@@ -44,6 +50,9 @@ const RegisterScreen = () => {
 
   return (
     <SafeAreaView
+      onTouchStart={() => {
+        setNameError(false);
+      }}
       style={{
         flex: 1,
         backgroundColor: mainColor,
@@ -54,6 +63,8 @@ const RegisterScreen = () => {
       <View style={{ paddingHorizontal: 10 }}>
         <Input
           value={fullName}
+          errorMessage={nameError ? "Full Name cannot be empty" : null}
+          errorStyle={{ marginTop: 0 }}
           onChangeText={(text) => {
             setFullName(text);
           }}
@@ -70,8 +81,10 @@ const RegisterScreen = () => {
           }
           leftIconContainerStyle={{ marginRight: 10 }}
           inputStyle={{ color: white }}
+          inputContainerStyle={nameError ? errorStyle : {}}
         />
         <Input
+          keyboardType="email-address"
           value={email}
           onChangeText={(text) => {
             setEmail(text);
@@ -86,6 +99,7 @@ const RegisterScreen = () => {
           inputStyle={{ color: white }}
         />
         <Input
+          secureTextEntry={showPassword}
           value={password}
           onChangeText={(text) => {
             setPassword(text);
@@ -98,6 +112,17 @@ const RegisterScreen = () => {
           }
           leftIconContainerStyle={{ marginRight: 10 }}
           inputStyle={{ color: white }}
+          rightIcon={
+            <Icon
+              onPress={() => {
+                setShowPassword(!showPassword);
+              }}
+              name={showPassword ? "eye" : "eye-with-line"}
+              type="entypo"
+              size={20}
+              color={searchItem}
+            />
+          }
         />
         <Button
           color={barBorder}
@@ -107,6 +132,10 @@ const RegisterScreen = () => {
           onPress={() => {
             if (fullName != "") {
               Register();
+              // @ts-ignore
+              navigation.navigate("LoginScreen");
+            } else {
+              setNameError(true);
             }
           }}
         >
