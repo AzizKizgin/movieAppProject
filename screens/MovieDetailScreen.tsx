@@ -6,12 +6,22 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
-import { barActive, barBorder, mainColor, white } from "../constants/color";
+import { mainColor, white } from "../constants/color";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon, Image } from "@rneui/base";
 import { x } from "../constants/size";
 import axios from "axios";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { db } from "../App";
 
 const getData = (id: number, setData: Function) => {
   axios({
@@ -40,7 +50,33 @@ const getSimilarMovies = (id: number, setData: Function) => {
   });
 };
 
-const MovieDetailScreen = () => {
+const AddToWatchList = async (id: number) => {
+  await updateDoc(doc(db, getAuth().currentUser?.uid, "WatchList"), {
+    ids: arrayUnion(id),
+  });
+};
+
+const RemoveFromWatchList = async (id: number) => {
+  const ref = doc(db, getAuth().currentUser?.uid, "WatchList");
+  await updateDoc(ref, {
+    ids: arrayRemove(id),
+  });
+};
+
+const AddToFavList = async (id: number) => {
+  await updateDoc(doc(db, getAuth().currentUser?.uid, "FavList"), {
+    ids: arrayUnion(id),
+  });
+};
+
+const RemoveFromFavList = async (id: number) => {
+  const ref = doc(db, getAuth().currentUser?.uid, "FavList");
+  await updateDoc(ref, {
+    ids: arrayRemove(id),
+  });
+};
+
+const MovieDetailScreen = ({ navigation }) => {
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [isListed, setIsListed] = React.useState(false);
   const route = useRoute();
@@ -49,14 +85,34 @@ const MovieDetailScreen = () => {
   const [movieData, setMovieData] = React.useState([]);
   const [similarMovies, setSimilarMovies] = React.useState([]);
 
-  const navigation = useNavigation();
-
   useEffect(() => {
+    const watch = onSnapshot(
+      doc(db, getAuth().currentUser?.uid, "WatchList"),
+      (doc) => {
+        if (doc.exists()) {
+          if (doc.data()?.ids.includes(currentID)) {
+            setIsListed(true);
+          }
+        }
+      }
+    );
+
+    const fav = onSnapshot(
+      doc(db, getAuth().currentUser?.uid, "FavList"),
+      (doc) => {
+        if (doc.exists()) {
+          if (doc.data()?.ids.includes(currentID)) {
+            setIsFavorite(true);
+          }
+        }
+      }
+    );
     getData(currentID, setMovieData);
     getSimilarMovies(currentID, setSimilarMovies);
   }, [currentID]);
 
   const scrollViewRef = React.useRef<ScrollView>(null);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: mainColor }}>
       <ScrollView style={{ flex: 1 }} ref={scrollViewRef}>
@@ -128,7 +184,12 @@ const MovieDetailScreen = () => {
               name="favorite"
               type="material"
               size={30}
-              onPress={() => setIsFavorite(!isFavorite)}
+              onPress={() => {
+                setIsFavorite(!isFavorite);
+                !isFavorite
+                  ? AddToFavList(currentID)
+                  : RemoveFromFavList(currentID);
+              }}
             />
             <Icon
               style={{ marginLeft: 10 }}
@@ -136,7 +197,12 @@ const MovieDetailScreen = () => {
               name="favorite"
               type="fontisto"
               size={25}
-              onPress={() => setIsListed(!isListed)}
+              onPress={() => {
+                setIsListed(!isListed);
+                !isListed
+                  ? AddToWatchList(currentID)
+                  : RemoveFromWatchList(currentID);
+              }}
             />
           </View>
         </View>
@@ -245,8 +311,7 @@ const MovieDetailScreen = () => {
                   style={{ marginHorizontal: 2 }}
                   activeOpacity={0.8}
                   onPress={() => {
-                    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
-                    setCurrentID(item.item.id);
+                    navigation.push("MovieDetail", { id: item.item.id });
                   }}
                 >
                   <Image

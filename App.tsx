@@ -22,15 +22,17 @@ const Stack = createNativeStackNavigator();
 export const app = initializeApp(firebaseConfig);
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import React, { useEffect } from "react";
 import SettingsScreen from "./screens/SettingsScreen";
+import WatchListScreen from "./screens/WatchListScreen";
 const auth = getAuth();
+export const db = getFirestore(app);
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log("auth", user);
       if (user) {
         setIsLoggedIn(true);
       } else {
@@ -85,6 +87,13 @@ export default function App() {
             <Stack.Screen
               name="SettingsScreen"
               component={SettingsScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="WatchListScreen"
+              component={WatchListScreen}
               options={{
                 animation: "slide_from_right",
               }}

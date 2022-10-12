@@ -44,7 +44,11 @@ const AccountScreen = () => {
         }}
       >
         <View style={{ alignSelf: "flex-start" }}>
-          <TouchableOpacity style={{ marginBottom: 20 }} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={{ marginBottom: 20 }}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("WatchListScreen")}
+          >
             <Text style={{ color: white, fontSize: 16 }}>Watch List</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ marginBottom: 20 }} activeOpacity={0.8}>

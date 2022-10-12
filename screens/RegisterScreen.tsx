@@ -16,6 +16,8 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../App";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -32,8 +34,11 @@ const RegisterScreen = () => {
   const Register = () => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
+        await setDoc(doc(db, getAuth().currentUser?.uid, "WatchList"), {});
+        await setDoc(doc(db, getAuth().currentUser?.uid, "FavList"), {});
+
         const user = userCredential.user;
         updateProfile(user, {
           displayName: fullName,
