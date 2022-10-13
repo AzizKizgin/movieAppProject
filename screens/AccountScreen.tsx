@@ -51,7 +51,11 @@ const AccountScreen = () => {
           >
             <Text style={{ color: white, fontSize: 16 }}>Watch List</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginBottom: 20 }} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={{ marginBottom: 20 }}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("FavListScreen")}
+          >
             <Text style={{ color: white, fontSize: 16 }}>Favories</Text>
           </TouchableOpacity>
           <TouchableOpacity

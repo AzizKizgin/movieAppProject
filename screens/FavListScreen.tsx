@@ -5,8 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../App";
-import MovieItem from "../components/MovieItem";
-import axios from "axios";
 import ListedMovies from "../components/ListedMovies";
 import { useNavigation } from "@react-navigation/native";
 
@@ -24,7 +22,7 @@ import { useNavigation } from "@react-navigation/native";
 // };
 
 const SetData = async (array: Function) => {
-  const docRef = doc(db, getAuth().currentUser?.uid, "WatchList");
+  const docRef = doc(db, getAuth().currentUser?.uid, "FavList");
   const docSnap = await getDoc(docRef);
 
   if (await docSnap.exists()) {
@@ -34,6 +32,7 @@ const SetData = async (array: Function) => {
     console.log("No such document!");
   }
 };
+
 const FavListScreen = () => {
   const [watchList, setWatchList] = React.useState([]);
 
@@ -54,7 +53,6 @@ const FavListScreen = () => {
       {watchList.length !== 0 ? (
         <View style={{ flex: 1, marginBottom: 5 }}>
           <FlatList
-            decelerationRate={0}
             data={watchList}
             renderItem={({ item }) => {
               return <ListedMovies id={item} />;

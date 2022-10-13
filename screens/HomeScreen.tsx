@@ -100,7 +100,7 @@ const HomeScreen = () => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-evenly",
-                  marginVertical: 30,
+                  marginVertical: 20,
                 }}
               >
                 <TouchableOpacity

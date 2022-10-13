@@ -26,6 +26,7 @@ import { getFirestore } from "firebase/firestore";
 import React, { useEffect } from "react";
 import SettingsScreen from "./screens/SettingsScreen";
 import WatchListScreen from "./screens/WatchListScreen";
+import FavListScreen from "./screens/FavListScreen";
 const auth = getAuth();
 export const db = getFirestore(app);
 export default function App() {
@@ -94,6 +95,13 @@ export default function App() {
             <Stack.Screen
               name="WatchListScreen"
               component={WatchListScreen}
+              options={{
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="FavListScreen"
+              component={FavListScreen}
               options={{
                 animation: "slide_from_right",
               }}

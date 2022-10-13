@@ -16,12 +16,15 @@ import {
   arrayRemove,
   arrayUnion,
   doc,
+  getDoc,
   onSnapshot,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../App";
+
+import { Button } from "react-native-paper";
 
 const getData = (id: number, setData: Function) => {
   axios({
@@ -61,6 +64,9 @@ const RemoveFromWatchList = async (id: number) => {
   await updateDoc(ref, {
     ids: arrayRemove(id),
   });
+
+  const docRef = doc(db, "cities", "SF");
+  const docSnap = await getDoc(docRef);
 };
 
 const AddToFavList = async (id: number) => {
@@ -76,10 +82,14 @@ const RemoveFromFavList = async (id: number) => {
   });
 };
 
-const MovieDetailScreen = ({ navigation }) => {
+const MovieDetailScreen = ({ navigation, route }) => {
+  const routes = navigation.getState()?.routes;
+  const prevRoute = routes[routes.length - 2];
+  const [asyncData, setAsyncData] = React.useState();
+
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [isListed, setIsListed] = React.useState(false);
-  const route = useRoute();
+
   const [currentID, setCurrentID] = React.useState(route.params?.id);
 
   const [movieData, setMovieData] = React.useState([]);
@@ -90,7 +100,7 @@ const MovieDetailScreen = ({ navigation }) => {
       doc(db, getAuth().currentUser?.uid, "WatchList"),
       (doc) => {
         if (doc.exists()) {
-          if (doc.data()?.ids.includes(currentID)) {
+          if (doc.data()?.ids?.includes(currentID)) {
             setIsListed(true);
           }
         }
@@ -101,7 +111,7 @@ const MovieDetailScreen = ({ navigation }) => {
       doc(db, getAuth().currentUser?.uid, "FavList"),
       (doc) => {
         if (doc.exists()) {
-          if (doc.data()?.ids.includes(currentID)) {
+          if (doc.data()?.ids?.includes(currentID)) {
             setIsFavorite(true);
           }
         }
@@ -123,6 +133,7 @@ const MovieDetailScreen = ({ navigation }) => {
           }}
           style={{ width: x, height: x * (9 / 16) }}
         />
+
         <View
           style={{
             alignSelf: "center",
@@ -189,8 +200,10 @@ const MovieDetailScreen = ({ navigation }) => {
                 !isFavorite
                   ? AddToFavList(currentID)
                   : RemoveFromFavList(currentID);
+                prevRoute.name === "FavListScreen" ? navigation.goBack() : null;
               }}
             />
+
             <Icon
               style={{ marginLeft: 10 }}
               color={isListed ? "#ff5500" : white}
@@ -202,6 +215,9 @@ const MovieDetailScreen = ({ navigation }) => {
                 !isListed
                   ? AddToWatchList(currentID)
                   : RemoveFromWatchList(currentID);
+                prevRoute.name === "WatchListScreen"
+                  ? navigation.goBack()
+                  : null;
               }}
             />
           </View>
